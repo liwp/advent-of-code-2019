@@ -1,2 +1,4 @@
-# advent-of-code-2019
-Collaborative AoC efforts for 2019
+Advent of Code 2019
+===
+
+Collaborative [AoC 2019](https://adventofcode.com/2019) efforts.
