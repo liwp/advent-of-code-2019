@@ -2,7 +2,8 @@ import math
 
 
 def main():
-    print(sum(map(fuel_required, module_masses())))
+    print(sum(map(fuel_required_for_mass, module_masses())))
+    print(sum(map(fuel_required_for_mass_and_fuel, module_masses())))
 
 
 def module_masses():
@@ -110,7 +111,16 @@ def module_masses():
     )
 
 
-def fuel_required(mass):
+def fuel_required_for_mass_and_fuel(mass):
+    fuel = fuel_required_for_mass(mass)
+    if fuel <= 0:
+        return 0
+    else:
+        return fuel + fuel_required_for_mass_and_fuel(fuel)
+
+
+
+def fuel_required_for_mass(mass):
     return math.floor(mass / 3) - 2
 
 
