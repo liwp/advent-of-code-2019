@@ -1,12 +1,24 @@
 def main():
     print(run((1,1,1,4,99,5,6,0,99)))
     print(part_1())
+    print(part_2())
 
 
 def part_1():
+    return run_gravity_assist(12, 2)
+
+
+def part_2():
+    for noun in range(0, 100):
+        for verb in range(0, 100):
+            if run_gravity_assist(noun, verb)[0] == 19690720:
+                return 100 * noun + verb
+
+
+def run_gravity_assist(noun, verb):
     program = list(gravity_assist_program)
-    program[1] = 12
-    program[2] = 2
+    program[1] = noun
+    program[2] = verb
     return run(program)
 
 
