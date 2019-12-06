@@ -14,29 +14,23 @@
   (accept [this opcode])
   (execute [this state]))
 
-(deftype Add []
+(defrecord Add []
   AInstruction
   (accept [this opcode] (= opcode 1))
   (execute [this state]
     (binary-op state +)))
 
-(defn new-add [] (Add.))
-
-(deftype Mul []
+(defrecord Mul []
   AInstruction
   (accept [this opcode] (= opcode 2))
   (execute [this state]
     (binary-op state *)))
 
-(defn new-mul [] (Mul.))
-
-(deftype Halt []
+(defrecord Halt []
   AInstruction
   (accept [this opcode] (= opcode 99))
   (execute [this state]
     (assoc state :pc nil)))
-
-(defn new-halt [] (Halt.))
 
 (defn run-cpu [tape noun verb]
   (let [tape (-> tape

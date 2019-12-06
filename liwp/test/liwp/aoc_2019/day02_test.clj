@@ -4,12 +4,12 @@
 
 (t/deftest Add
   (t/testing "accept"
-    (t/is (sut/accept (sut/new-add) 1))
-    (t/is (not (sut/accept (sut/new-add) 2)))
-    (t/is (not (sut/accept (sut/new-add) 99))))
+    (t/is (sut/accept (sut/->Add) 1))
+    (t/is (not (sut/accept (sut/->Add) 2)))
+    (t/is (not (sut/accept (sut/->Add) 99))))
 
   (t/testing "execute"
-    (let [add (sut/new-add)
+    (let [add (sut/->Add)
           pc 0
           tape [1,9,10,3,2,3,11,0,99,30,40,50]
           new-state (sut/execute add {:pc pc :tape tape})]
@@ -18,12 +18,12 @@
 
 (t/deftest Mul
   (t/testing "accept"
-    (t/is (not (sut/accept (sut/new-mul) 1)))
-    (t/is (sut/accept (sut/new-mul) 2))
-    (t/is (not (sut/accept (sut/new-mul) 99))))
+    (t/is (not (sut/accept (sut/->Mul) 1)))
+    (t/is (sut/accept (sut/->Mul) 2))
+    (t/is (not (sut/accept (sut/->Mul) 99))))
 
   (t/testing "execute"
-    (let [mul (sut/new-mul)
+    (let [mul (sut/->Mul)
           pc 4
           tape [1,9,10,70,2,3,11,0,99,30,40,50]
           new-state (sut/execute mul {:pc pc :tape tape})]
@@ -32,12 +32,12 @@
 
 (t/deftest Halt
   (t/testing "accept"
-    (t/is (not (sut/accept (sut/new-halt) 1)))
-    (t/is (not (sut/accept (sut/new-halt) 2)))
-    (t/is (sut/accept (sut/new-halt) 99)))
+    (t/is (not (sut/accept (sut/->Halt) 1)))
+    (t/is (not (sut/accept (sut/->Halt) 2)))
+    (t/is (sut/accept (sut/->Halt) 99)))
 
   (t/testing "execute"
-    (let [halt (sut/new-halt)
+    (let [halt (sut/->Halt)
           pc 8
           tape [3500,9,10,70,2,3,11,0,99,30,40,50]
           new-state (sut/execute halt {:pc pc :tape tape})]
