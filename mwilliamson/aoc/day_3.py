@@ -23,11 +23,7 @@ def part_2():
 
 
 def closest_intersection_distance_by_manhattan_distance(path_1, path_2):
-    step_counts_by_location_1 = step_counts_by_location(path_1)
-    step_counts_by_location_2 = step_counts_by_location(path_2)
-
-    intersections = frozenset(step_counts_by_location_1.keys()) & frozenset(step_counts_by_location_2.keys())
-
+    intersections = frozenset(steps(path_1)) & frozenset(steps(path_2))
     return min(map(manhattan_distance, intersections))
 
 
@@ -46,20 +42,29 @@ def closest_intersection_distance_by_step_count(path_1, path_2):
 def step_counts_by_location(path):
     result = []
 
-    current_location = (0, 0)
     step_count = 0
-    for move in path.split(","):
-        direction = move[0]
-        distance = int(move[1:])
-        for _ in range(0, distance):
-            step_count += 1
-            current_location = step(current_location, direction)
-            result.append((current_location, step_count))
+    for step in steps(path):
+        step_count += 1
+        result.append((step, step_count))
 
     return dict(reversed(result))
 
 
-def step(location, direction):
+def steps(path):
+    steps = []
+
+    current_location = (0, 0)
+    for move in path.split(","):
+        direction = move[0]
+        distance = int(move[1:])
+        for _ in range(0, distance):
+            current_location = next_step(current_location, direction)
+            steps.append(current_location)
+
+    return steps
+
+
+def next_step(location, direction):
     x, y = location
 
     if direction == "U":
