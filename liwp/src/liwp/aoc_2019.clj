@@ -1,9 +1,12 @@
 (ns liwp.aoc-2019
   (:require [clojure.string :as str]
-            [liwp.aoc-2019.day01 :as day01]
-            [liwp.aoc-2019.day02 :as day02]))
+            [liwp.aoc-2019.day01]
+            [liwp.aoc-2019.day02]
+            [liwp.aoc-2019.day03]
+            [liwp.aoc-2019.day04]
+            [liwp.aoc-2019.day05]))
 
-(def current-day 2)
+(def current-day 5)
 
 (defn parse-args [args]
   (->> args
