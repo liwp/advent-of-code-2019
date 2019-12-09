@@ -4,9 +4,10 @@
             [liwp.aoc-2019.day02]
             [liwp.aoc-2019.day03]
             [liwp.aoc-2019.day04]
-            [liwp.aoc-2019.day05]))
+            [liwp.aoc-2019.day05]
+            [liwp.aoc-2019.day06]))
 
-(def current-day 5)
+(def current-day 6)
 
 (defn parse-args [args]
   (->> args
