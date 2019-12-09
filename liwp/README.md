@@ -1,42 +1,23 @@
-# aoc_2019
+Advent of Code 2019
+===
 
-FIXME: description
+@liwp's AoC2019 efforts.
 
-## Installation
+# Usage
 
-Download from http://example.com/FIXME.
+[Install Clojure](https://clojure.org/guides/getting_started).
 
-## Usage
-
-FIXME: explanation
-
-Run the project directly:
+Run all the solutions that I've implemented:
 
     $ clj -m liwp.aoc-2019
 
-Run the project's tests (they'll fail until you edit them):
+Run the tests:
 
     $ clj -A:test:runner
 
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
-
 ## License
 
-Copyright © 2019 FIXME
+Copyright © 2019 Lauri Pesonen
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Distributed under the Eclipse Public License either version 1.0 or (at your
+option) any later version.
