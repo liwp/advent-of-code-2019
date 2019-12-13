@@ -54,8 +54,11 @@
   (execute [this state]
     (let [{:keys [input pc tape]} state
           [_ addr] (subvec tape pc)]
-      (merge state {:pc (+ pc 2)
-                    :tape (tape-write tape addr input)})))
+      (if (seq input)
+        (merge state {:input (vec (rest input))
+                      :pc (+ pc 2)
+                      :tape (tape-write tape addr (first input))})
+        (assoc state :blocked? true))))
   (opcode [this] 3))
 
 (defrecord Output []
@@ -118,6 +121,12 @@
       (merge state {:pc (+ pc 4) :tape (tape-write tape res-addr res)})))
   (opcode [this] 8))
 
+(defrecord Halt []
+  AInstruction
+  (execute [this state]
+    (merge state {:halted? true}))
+  (opcode [this] 99))
+
 (defn run-cpu
   [state]
   (let [instructions (into {} (map #(vector (opcode %) %)) [(->Add)
@@ -127,12 +136,13 @@
                                                             (->JumpIfFalse)
                                                             (->JumpIfTrue)
                                                             (->LessThan)
-                                                            (->Equals)])]
-    (loop [state state]
-      (let [{:keys [output pc tape]} state
+                                                            (->Equals)
+                                                            (->Halt)])]
+    (loop [state (dissoc state :blocked?)]
+      (let [{:keys [blocked? halted? output pc tape]} state
             encoded-op (get tape pc)
             op (inst->opcode encoded-op)]
-        (if (= op 99) ;; halt
+        (if (or blocked? halted?)
           state
           (let [inst (get instructions op)
                 state (execute inst state)]

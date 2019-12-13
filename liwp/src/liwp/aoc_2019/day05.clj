@@ -6,13 +6,13 @@
    ])
 
 (defn part-1 []
-  (let [state {:input 1
+  (let [state {:input [1]
                :pc 0
                :tape input}]
     (:output (ic/run-cpu state))))
 
 (defn part-2 []
-  (let [state {:input 5
+  (let [state {:input [5]
                :pc 0
                :tape input}]
     (:output (ic/run-cpu state))))
