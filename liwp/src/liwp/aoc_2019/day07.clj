@@ -17,14 +17,16 @@
 (defn run-cpus [cpus input]
   (loop [new-cpus [] [cpu & cpus] cpus input input]
     (if (nil? cpu)
-      new-cpus
-      (let [cpu (run-cpu-with-input cpu input)]
-        (recur (conj new-cpus cpu) cpus (:output cpu))))))
+      {:cpus new-cpus :output input}
+      (let [cpu (run-cpu-with-input cpu input)
+            output (:output cpu)
+            cpu (merge cpu {:output (pop output)})]
+        (recur (conj new-cpus cpu) cpus (peek output))))))
 
 (defn run-system [tape phases]
   (loop [cpus (map #(new-cpu tape %) phases) input 0]
-    (let [cpus (run-cpus cpus input)
-          {:keys [blocked? output]} (last cpus)]
+    (let [{:keys [cpus output]} (run-cpus cpus input)
+          {:keys [blocked?]} (last cpus)]
       (if blocked?
         (recur cpus output)
         output))))
