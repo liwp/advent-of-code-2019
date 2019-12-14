@@ -70,10 +70,10 @@
     (let [{:keys [input pc tape]} state
           [encoded-op addr] (subvec tape pc)
           [mode] (inst->modes encoded-op 1)]
-      (if (seq input)
-        (merge state {:input (vec (rest input))
+      (if (peek input)
+        (merge state {:input (pop input)
                       :pc (+ pc 2)
-                      :tape (tape-write state mode addr (first input))})
+                      :tape (tape-write state mode addr (peek input))})
         (assoc state :blocked? true))))
   (opcode [this] 3))
 
@@ -158,6 +158,7 @@
   {:base 0
    :blocked? false
    :halted? false
+   :input clojure.lang.PersistentQueue/EMPTY
    :output clojure.lang.PersistentQueue/EMPTY
    :pc 0})
 
@@ -186,4 +187,3 @@
         state
         (let [inst (get instructions (next-opcode state))]
           (recur (execute inst state)))))))
-

@@ -19,6 +19,6 @@
   (run-with-input input 2))
 
 (defn run []
-  (println "Day 08")
+  (println "Day 09")
   (println "Part 1:" (part-1))
   (println "Part 2:" (part-2)))
