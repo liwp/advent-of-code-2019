@@ -1,6 +1,5 @@
 (ns liwp.aoc-2019.day10
-  (:require [clojure.string :refer [split-lines]]
-            [liwp.aoc-2019.intcode :as ic]))
+  (:require [clojure.string :refer [split-lines]]))
 
 (def input (slurp "day10-input.txt"))
 
