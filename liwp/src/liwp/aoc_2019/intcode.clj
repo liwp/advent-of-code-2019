@@ -187,3 +187,8 @@
         state
         (let [inst (get instructions (next-opcode state))]
           (recur (execute inst state)))))))
+
+(defn new-cpu [tape]
+  {:input clojure.lang.PersistentQueue/EMPTY
+   :pc 0
+   :tape tape})
