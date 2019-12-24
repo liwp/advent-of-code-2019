@@ -56,7 +56,9 @@
 (fn m.ops.input [xs ip param-modes in out]
   (let [x (. xs (+ 1 ip))
         i (table.remove in 1)]
-    [:ok (m.store xs x i) (+ 2 ip) in out]))
+    (if (= nil i)
+        [:pause-input xs ip in out]
+        [:ok (m.store xs x i) (+ 2 ip) in out])))
 
 (fn m.ops.output [xs ip param-modes in out]
   (let [x1 (m.get-param xs ip param-modes 1)]
@@ -103,14 +105,17 @@
       _  (error (.. "Invalid op: " (tostring opcode) " at: " (tostring ip))))))
 
 (fn m.run-loop [state]
-  (let [[ok/halt xs ip in out] state]
-    (match ok/halt
-      :ok   (m.run-loop (m.step xs ip in out))
-      :halt [xs out])))
+  (let [[status xs ip in out] state]
+    (if (= status :ok)
+        (m.run-loop (m.step xs ip in out))
+        state)))
 
 (fn m.run [xs in]
-  (let [[xs out] (m.run-loop [:ok (m.zero-base xs) 0 in []])]
-    [(m.one-base xs) out]))
+  (let [state (m.run-loop [:ok (m.zero-base xs) 0 in []])
+        [status xs ip in out] state]
+    (if (= status :halt)
+        [(m.one-base xs) out]
+        state)))
 
 (local input
        [3 225 1 225 6 6 1100 1 238 225 104 0 1101 65 73 225 1101 37 7 225 1101 42 58 225 1102 62 44
