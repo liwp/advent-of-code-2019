@@ -107,3 +107,39 @@ def test_output_reads_address_and_sends_value_to_output():
     ], output=outputs.append)
 
     assert outputs == [42, 43, 44]
+
+
+class TestParameterModes(object):
+    def test_parameter_mode_zero_treats_parameters_as_addresses(self):
+        result = run([
+            1, 5, 6, 7,
+            99,
+            20,
+            7,
+            42,
+        ])
+
+        assert result == [
+            1, 5, 6, 7,
+            99,
+            20,
+            7,
+            27,
+        ]
+
+    def test_parameter_mode_one_treats_parameters_as_addresses(self):
+        result = run([
+            1101, 5, 6, 7,
+            99,
+            20,
+            7,
+            42,
+        ])
+
+        assert result == [
+            1101, 5, 6, 7,
+            99,
+            20,
+            7,
+            11,
+        ]

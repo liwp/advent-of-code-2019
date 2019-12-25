@@ -43,7 +43,14 @@ class State(object):
         return self.opcode_value() % 100
 
     def read_parameter(self, index):
-        return self.memory[self._read_immediate_parameter(index)]
+        parameter_mode = (self.opcode_value() // 100 // 10 ** index) % 10
+        immediate = self._read_immediate_parameter(index)
+        if parameter_mode == 0:
+            return self.memory[immediate]
+        elif parameter_mode == 1:
+            return immediate
+        else:
+            raise ValueError("unknown parameter mode: {}".format(parameter_mode))
 
     def write_parameter(self, index, value):
         self.memory[self._read_immediate_parameter(index)] = value
