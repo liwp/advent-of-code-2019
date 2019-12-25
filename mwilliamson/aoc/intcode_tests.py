@@ -36,3 +36,31 @@ def test_add_adds_together_numbers_from_two_addresses_and_stores_in_third_addres
         _JUNK,
         27,
     ]
+
+
+def test_multiply_multiplies_together_numbers_from_two_addresses_and_stores_in_third_address():
+    result = run([
+        2, 6, 9, 12,
+        99,
+        _JUNK,
+        20,
+        _JUNK,
+        _JUNK,
+        7,
+        _JUNK,
+        _JUNK,
+        42,
+    ])
+
+    assert result == [
+        2, 6, 9, 12,
+        99,
+        _JUNK,
+        20,
+        _JUNK,
+        _JUNK,
+        7,
+        _JUNK,
+        _JUNK,
+        140,
+    ]
