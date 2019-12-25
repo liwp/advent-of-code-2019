@@ -1,4 +1,4 @@
-def run(program, *, next_input=None):
+def run(program, *, next_input=None, output=None):
     program = list(program)
 
     position = 0
@@ -18,6 +18,11 @@ def run(program, *, next_input=None):
 
             program[program[position + 3]] = result
             position += 4
+
         elif opcode == 3:
             program[program[position + 1]] = next_input()
+            position += 2
+
+        elif opcode == 4:
+            output(program[program[position + 1]])
             position += 2

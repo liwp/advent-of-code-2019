@@ -66,7 +66,6 @@ def test_multiply_multiplies_together_numbers_from_two_addresses_and_stores_in_t
     ]
 
 
-
 def test_input_takes_input_and_saves_to_address():
     inputs = [44, 43, 42]
 
@@ -92,3 +91,19 @@ def test_input_takes_input_and_saves_to_address():
         43,
         44,
     ]
+
+
+def test_output_reads_address_and_sends_value_to_output():
+    outputs = []
+
+    result = run([
+        4, 7,
+        4, 8,
+        4, 9,
+        99,
+        42,
+        43,
+        44,
+    ], output=outputs.append)
+
+    assert outputs == [42, 43, 44]
