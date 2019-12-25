@@ -33,6 +33,12 @@ def run(program, *, next_input=None, output=None):
             else:
                 state.instruction_pointer = state.read_parameter(1)
 
+        elif opcode == 6:
+            if state.read_parameter(0) == 0:
+                state.instruction_pointer = state.read_parameter(1)
+            else:
+                state.instruction_pointer += 3
+
         else:
             raise ValueError("unknown opcode: {}".format(opcode))
 

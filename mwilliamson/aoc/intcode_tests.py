@@ -132,6 +132,30 @@ class TestJumpIfTrue(object):
         assert outputs == [42]
 
 
+class TestJumpIfFalse(object):
+    def test_when_first_parameter_is_zero_then_instruction_pointer_is_set_to_second_parameter(self):
+        outputs = []
+
+        result = run([
+            1106, 1, 5,
+            104, 42,
+            99,
+        ], output=outputs.append)
+
+        assert outputs == [42]
+
+    def test_when_first_parameter_is_nonzero_then_instruction_pointer_is_set_to_next_instruction(self):
+        outputs = []
+
+        result = run([
+            1106, 0, 5,
+            104, 42,
+            99,
+        ], output=outputs.append)
+
+        assert outputs == []
+
+
 class TestParameterModes(object):
     def test_parameter_mode_zero_treats_parameters_as_addresses(self):
         result = run([
