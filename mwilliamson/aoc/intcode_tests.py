@@ -197,6 +197,34 @@ class TestLessThan(object):
         ]
 
 
+class TestEquals(object):
+    def test_when_first_parameter_is_equal_to_second_parameter_then_one_is_stored_in_third_parameter(self):
+        result = run([
+            1108, 2, 2, 5,
+            99,
+            _JUNK,
+        ])
+
+        assert result == [
+            1108, 2, 2, 5,
+            99,
+            1,
+        ]
+
+    def test_when_first_parameter_is_not_equal_to_second_parameter_then_zero_is_stored_in_third_parameter(self):
+        result = run([
+            1108, 1, 2, 5,
+            99,
+            _JUNK,
+        ])
+
+        assert result == [
+            1108, 1, 2, 5,
+            99,
+            0,
+        ]
+
+
 class TestParameterModes(object):
     def test_parameter_mode_zero_treats_parameters_as_addresses(self):
         result = run([

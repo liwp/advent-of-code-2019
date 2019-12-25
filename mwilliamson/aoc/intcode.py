@@ -48,6 +48,15 @@ def run(program, *, next_input=None, output=None):
             state.write_parameter(2, result)
             state.instruction_pointer += 4
 
+        elif opcode == 8:
+            if state.read_parameter(0) == state.read_parameter(1):
+                result = 1
+            else:
+                result = 0
+
+            state.write_parameter(2, result)
+            state.instruction_pointer += 4
+
         else:
             raise ValueError("unknown opcode: {}".format(opcode))
 
