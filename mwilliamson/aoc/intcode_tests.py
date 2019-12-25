@@ -108,6 +108,29 @@ def test_output_reads_address_and_sends_value_to_output():
 
     assert outputs == [42, 43, 44]
 
+class TestJumpIfTrue(object):
+    def test_when_first_parameter_is_nonzero_then_instruction_pointer_is_set_to_second_parameter(self):
+        outputs = []
+
+        result = run([
+            1105, 1, 5,
+            104, 42,
+            99,
+        ], output=outputs.append)
+
+        assert outputs == []
+
+    def test_when_first_parameter_is_zero_then_instruction_pointer_is_set_to_next_instruction(self):
+        outputs = []
+
+        result = run([
+            1105, 0, 5,
+            104, 42,
+            99,
+        ], output=outputs.append)
+
+        assert outputs == [42]
+
 
 class TestParameterModes(object):
     def test_parameter_mode_zero_treats_parameters_as_addresses(self):
