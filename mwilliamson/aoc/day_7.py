@@ -1,4 +1,6 @@
 import itertools
+import queue
+import threading
 
 from . import intcode
 
@@ -16,22 +18,31 @@ def _find_maximum_signal(program):
 
 
 def _run_amplifiers(program, phase_settings):
-    input_signal = 0
-    for phase_setting in phase_settings:
-        input_signal = _run_amplifier(
-            program=program,
-            phase_setting=phase_setting,
-            input_signal=input_signal,
+    input_queues = [queue.Queue() for _ in phase_settings]
+
+    for index, phase_setting in enumerate(phase_settings):
+        input_queue = input_queues[index]
+        input_queue.put(phase_setting)
+        output_queue = input_queues[(index + 1) % 5]
+
+        thread = threading.Thread(
+            target=_run_amplifier,
+            kwargs=dict(
+                program=program,
+                input_queue=input_queue,
+                output_queue=output_queue,
+            ),
         )
+        thread.start()
 
-    return input_signal
+    input_queues[0].put(0)
+
+    thread.join()
+    return output_queue.get()
 
 
-def _run_amplifier(program, phase_setting, input_signal):
-    outputs = []
-    intcode.run(program, next_input=[input_signal, phase_setting].pop, output=outputs.append)
-    assert len(outputs) == 1
-    return outputs[0]
+def _run_amplifier(program, input_queue, output_queue):
+    intcode.run(program, next_input=input_queue.get, output=output_queue.put)
 
 
 _amplifier_program = (3,8,1001,8,10,8,105,1,0,0,21,42,67,76,89,110,191,272,353,434,99999,3,9,102,2,9,9,1001,9,2,9,1002,9,2,9,1001,9,2,9,4,9,99,3,9,1001,9,4,9,102,4,9,9,101,3,9,9,1002,9,2,9,1001,9,4,9,4,9,99,3,9,102,5,9,9,4,9,99,3,9,1001,9,3,9,1002,9,3,9,4,9,99,3,9,102,3,9,9,101,2,9,9,1002,9,3,9,101,5,9,9,4,9,99,3,9,1001,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,1002,9,2,9,4,9,99,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,101,1,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,99,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,102,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,101,2,9,9,4,9,99,3,9,102,2,9,9,4,9,3,9,1001,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,101,1,9,9,4,9,3,9,102,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,1,9,9,4,9,3,9,1002,9,2,9,4,9,99,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,101,2,9,9,4,9,99)
