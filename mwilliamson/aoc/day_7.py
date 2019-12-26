@@ -6,14 +6,18 @@ from . import intcode
 
 
 def main():
-    assert _find_maximum_signal([3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0]) == 65210
-    print(_find_maximum_signal(_amplifier_program))
+    assert _find_maximum_signal(
+        [3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0],
+        possible_phase_settings=[0, 1, 2, 3, 4],
+    ) == 65210
+    print("part 1", _find_maximum_signal(_amplifier_program, possible_phase_settings=[0, 1, 2, 3, 4]))
+    print("part 2", _find_maximum_signal(_amplifier_program, possible_phase_settings=[5, 6, 7, 8, 9]))
 
 
-def _find_maximum_signal(program):
+def _find_maximum_signal(program, possible_phase_settings):
     return max(
         _run_amplifiers(program, phase_settings)
-        for phase_settings in itertools.permutations([0, 1, 2, 3, 4])
+        for phase_settings in itertools.permutations(possible_phase_settings)
     )
 
 
