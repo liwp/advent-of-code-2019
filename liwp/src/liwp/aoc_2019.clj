@@ -15,7 +15,8 @@
             [liwp.aoc-2019.day13]
             [liwp.aoc-2019.day14]
             [liwp.aoc-2019.day15]
-            [liwp.aoc-2019.day16]))
+            [liwp.aoc-2019.day16]
+            [liwp.aoc-2019.day17]))
 
 (def day-ns-re #"liwp\.aoc-2019\.day0?(\d+)")
 
