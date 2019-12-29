@@ -1,4 +1,4 @@
-(local c (require :day5))
+(local c (require :intcode))
 
 (local m {})
 
@@ -53,7 +53,7 @@
     (set states
          (m.map
           (fn [[status xs ip in out]]
-            (let [state (c.run-loop [:ok xs ip [signal] out])]
+            (let [state (c.run-loop [:ok xs ip 0 [signal] out])]
               (set signal (-> state c.last c.last))
               state))
           states)))
@@ -61,10 +61,10 @@
 
 (fn m.amplify+feedback [make-program pss]
   (let [states (m.map
-                (fn [ps] (c.run-loop [:ok (c.zero-base (make-program)) 0 [ps] []]))
+                (fn [ps] (c.run-loop [:ok (c.zero-base (make-program)) 0 0 [ps] []]))
                 pss)]
     (->> pss
-         (m.map (fn [ps] (c.run-loop [:ok (c.zero-base (make-program)) 0 [ps] []])))
+         (m.map (fn [ps] (c.run-loop [:ok (c.zero-base (make-program)) 0 0 [ps] []])))
          (m.amplify+feedback-loop states)
          c.last c.last c.last)))
 
@@ -86,7 +86,7 @@
 (comment
 
  (global m (require :day7))
- (global c (require :day5))
+ (global c (require :intcode))
 
  (m.all-uniq [0 1 2 3 4])
 
