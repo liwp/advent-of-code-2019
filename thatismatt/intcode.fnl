@@ -128,6 +128,12 @@
         [(c.one-base xs) out]
         state)))
 
+(fn c.read-program [filename]
+  (let [t []]
+    (each [v (string.gmatch ((io.lines filename)) "[^,]+")]
+      (table.insert t (tonumber v)))
+    t))
+
 (comment
 
  (global fennel (require :fennel))

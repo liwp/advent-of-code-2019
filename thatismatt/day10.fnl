@@ -9,8 +9,8 @@
 (fn m.filter [f t]
   (let [r []]
     (each [_ v (pairs t)]
-      (if (f v)
-          (table.insert r v)))
+      (when (f v)
+        (table.insert r v)))
     r))
 
 (fn m.group-by [f t]
